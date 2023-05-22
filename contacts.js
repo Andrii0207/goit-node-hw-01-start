@@ -19,14 +19,18 @@ async function getContactById(contactId) {
   }
   return contact;
 }
-// getContactById("qdggE76Jtbfd9eWJHrssH");
 
 async function removeContact(contactId) {
   const contactList = await listContacts();
-  const newContactList = contactList.filter((item) => item.id !== contactId);
+  // const newContactList = contactList.filter((item) => item.id !== contactId);
+  const index = contactList.findIndex((item) => item.id === contactId);
+  if (index === -1) {
+    return null;
+  }
+  const [deleteContact] = contactList.splice(index, 1);
   try {
-    await fs.writeFile(contactsPath, JSON.stringify(newContactList));
-    return newContactList;
+    await fs.writeFile(contactsPath, JSON.stringify(contactList));
+    return deleteContact;
   } catch (error) {
     console.log(error.message);
   }
