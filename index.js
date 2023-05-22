@@ -1,19 +1,23 @@
 const fs = require("fs/promises");
-const path = require("path");
 const argv = require("yargs").argv;
 
-const contacts = require("./db");
+const {
+  listContacts,
+  getContactById,
+  addContact,
+  removeContact,
+} = require("./contacts.js");
 
 // TODO: рефакторить
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      const contactList = await contacts.listContacts();
+      const contactList = await listContacts();
       console.log(contactList);
       break;
 
     case "get":
-      const contact = await contacts.getContactById(id);
+      const contact = await getContactById(id);
       if (!contact) {
         throw new Error(`Product with id=${id} not found`);
       }
@@ -21,12 +25,12 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "add":
-      const newContact = await contacts.addContact(name, email, phone);
+      const newContact = await addContact(name, email, phone);
       console.log(newContact);
       break;
 
     case "remove":
-      const newContactList = await contacts.removeContact(id);
+      const newContactList = await removeContact(id);
       console.log(newContactList);
       break;
 
@@ -37,6 +41,6 @@ async function invokeAction({ action, id, name, email, phone }) {
 
 const id = "qdggE76Jtbfd9eWJHrssH";
 invokeAction({ action: "get", id });
-invokeAction();
+// invokeAction({ action: "list" });
 
 // invokeAction(argv);
