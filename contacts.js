@@ -1,7 +1,8 @@
 const fs = require("fs/promises");
-const path = require("path");
-// const { nanoid } = require("nanoid");
+const { nanoid } = require("nanoid");
+// const { v4 } = require("uuid");
 
+const path = require("path");
 const contactsPath = path.join(__dirname, "./db/contacts.json");
 
 // TODO: задокументировать каждую функцию
@@ -21,10 +22,11 @@ async function getContactById(contactId) {
 // getContactById("qdggE76Jtbfd9eWJHrssH");
 
 async function removeContact(contactId) {
-  const contactList = listContacts();
+  const contactList = await listContacts();
   const newContactList = contactList.filter((item) => item.id !== contactId);
   try {
-    await fs.writeFile(contactsPath, JSON.stringify(newContactList, null, 2));
+    await fs.writeFile(contactsPath, JSON.stringify(newContactList));
+    return newContactList;
   } catch (error) {
     console.log(error.message);
   }
@@ -32,10 +34,11 @@ async function removeContact(contactId) {
 
 async function addContact(name, email, phone) {
   const contactList = await listContacts();
-  const newContact = { id: "qdggE76Jtbfd9eWJHrssH", name, email, phone };
+  const newContact = { id: nanoid(), name, email, phone };
   contactList.push(newContact);
   try {
-    await fs.readFile(contactsPath, JSON.stringify(contactList, null, 2));
+    await fs.writeFile(contactsPath, JSON.stringify(contactList));
+    return newContact;
   } catch (error) {
     console.log(error.message);
   }
