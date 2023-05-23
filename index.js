@@ -1,5 +1,5 @@
-const fs = require("fs/promises");
-const argv = require("yargs").argv;
+const { argv } = require("yargs");
+const { program } = require("commander");
 
 const {
   listContacts,
@@ -31,9 +31,6 @@ async function invokeAction({ action, id, name, email, phone }) {
 
     case "remove":
       const deleteContact = await removeContact(id);
-      if (!deleteContact) {
-        throw new Error(`Contact with id=${id} not found`);
-      }
       console.log(`This contact was delete:`, deleteContact);
       break;
 
@@ -42,22 +39,15 @@ async function invokeAction({ action, id, name, email, phone }) {
   }
 }
 
-const newData = {
-  name: "Winnie Pooh",
-  email: "WinniePooh.net",
-  phone: "(123) 456-7890",
-};
-const id = "qdggE76Jtbfd9eWJHrssH";
-const deleteId = "T3U_NIDwUnK1awMIQrk9R";
+program
+  .option("-a, --action <type>", "product operation")
+  .option("-id, --id <type>", "product id")
+  .option("-n, --name <type>", "product name")
+  .option("-e, --email <type>", "product email")
+  .option("-p, --phone <type>", "product phone");
 
-// invokeAction({ action: "get", id });
-// invokeAction({ action: "list" });
-// invokeAction({
-//   action: "add",
-//   name: "Winnie Pooh",
-//   email: "WinniePooh.net",
-//   phone: "(123) 456-7890",
-// });
-// invokeAction({ action: "remove", id: deleteId });
+program.parse(process.argv);
 
-invokeAction(argv);
+const options = program.opts();
+
+invokeAction(options);
