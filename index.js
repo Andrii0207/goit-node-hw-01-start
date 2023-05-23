@@ -1,5 +1,7 @@
 const { argv } = require("yargs");
-const { program } = require("commander");
+const { Command } = require("commander");
+
+const program = new Command();
 
 const {
   listContacts,
@@ -40,13 +42,13 @@ async function invokeAction({ action, id, name, email, phone }) {
 }
 
 program
-  .option("-a, --action <type>", "product operation")
-  .option("-id, --id <type>", "product id")
-  .option("-n, --name <type>", "product name")
-  .option("-e, --email <type>", "product email")
-  .option("-p, --phone <type>", "product phone");
+  .option("-a, --action <type>", "type operation")
+  .option("-id, --id <type>", "user id")
+  .option("-n, --name <type>", "user name")
+  .option("-e, --email <type>", "user email")
+  .option("-p, --phone <type>", "user phone");
 
-program.parse(process.argv);
+program.parse();
 
 const options = program.opts();
 
