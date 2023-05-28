@@ -10,6 +10,4 @@
 // # Удаляем контакт
 // node index.js --action remove --id qdggE76Jtbfd9eWJHrssH
 
-result of all operations:
-
-https://ibb.co/zXX3bmF
+TOTAL result of all operations: https://ibb.co/zXX3bmF
